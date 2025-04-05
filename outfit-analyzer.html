@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outfit Analyzer - AI Wardrobe Assistant</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/analyzer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"><i class="fas fa-tshirt"></i> AI Wardrobe</div>
+        <div class="nav-links">
+            <a href="index.html">Weather & Outfits</a>
+            <a href="outfit-analyzer.html" class="active">Outfit Analyzer</a>
+            <a href="bot.html">Style Assistant</a>
+            <a href="energy-tips.html">Energy Tips</a>
+        </div>
+        <div class="theme-toggle">
+            <i class="fas fa-moon"></i>
+        </div>
+    </nav>
+
+    <main class="analyzer-page">
+        <div class="analyzer-container">
+            <div class="upload-section">
+                <h2><i class="fas fa-camera"></i> Analyze Your Outfit</h2>
+                <div class="upload-box" id="uploadBox">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Drag and drop your outfit image or click to upload</p>
+                    <input type="file" id="imageInput" accept="image/*" hidden>
+                </div>
+                <div class="preview-box" id="previewBox" style="display: none;">
+                    <img id="imagePreview" alt="Outfit Preview">
+                    <div class="preview-controls">
+                        <button id="newImageBtn" class="secondary-btn"><i class="fas fa-redo"></i> New Image</button>
+                        <button id="analyzeBtn" class="analyze-btn"><i class="fas fa-magic"></i> Analyze Outfit</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="analysis-section" id="analysisSection" style="display: none;">
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <h3><i class="fas fa-comments"></i> AI Analysis</h3>
+                    </div>
+                    <div class="chat-messages" id="chatMessages">
+                        <!-- Messages will be inserted here -->
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" id="userInput" placeholder="Ask about the outfit...">
+                        <button id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loader"></div>
+        <p>Analyzing your outfit...</p>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/analyzer.js"></script>
+</body>
+</html>
