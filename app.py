@@ -14,12 +14,12 @@ app.register_blueprint(outfit_bp, url_prefix='/outfit')
 
 # Load API key and configure Gemini
 load_dotenv()
-api_key = "AIzaSyABWll1qHfrauwsTZqcnp_B7baRZUtG3jI"
+api_key = os.getenv("GEMINI_API_KEY", "AIzaSyABWll1qHfrauwsTZqcnp_B7baRZUtG3jI")
 genai.configure(api_key=api_key)
 model = genai.GenerativeModel('gemini-1.5-flash')
 
 # Weather API key
-WEATHER_API_KEY = '093a44f57ca807d2b7a6f6b1163da88c'
+WEATHER_API_KEY = os.getenv("WEATHER_API_KEY", '093a44f57ca807d2b7a6f6b1163da88c')
 
 # Initialize chat history
 chat_history = {}
@@ -97,4 +97,5 @@ def chat():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
