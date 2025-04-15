@@ -317,9 +317,10 @@ resetBtn.addEventListener('click', () => {
 // Update the getWeatherData function
 async function getWeatherData(city) {
     try {
+        // Update the fetch URLs to use the full Render URL
         const [weatherResponse, forecastResponse] = await Promise.all([
-            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`),
-            fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${API_KEY}`)
+            fetch(`https://seasonal-wardrobe.onrender.com/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`),
+            fetch(`https://seasonal-wardrobe.onrender.com/data/2.5/forecast?q=${city}&units=metric&appid=${API_KEY}`)
         ]);
 
         if (!weatherResponse.ok || !forecastResponse.ok) {

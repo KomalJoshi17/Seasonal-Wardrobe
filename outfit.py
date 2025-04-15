@@ -4,16 +4,12 @@ import base64
 import google.generativeai as genai
 from PIL import Image
 import io
-from dotenv import load_dotenv
-
-# Load environment variables
-load_dotenv()
 
 # Create a Blueprint for outfit routes
 outfit_bp = Blueprint('outfit', __name__)
 
 # Configure Gemini API
-api_key = os.getenv("GEMINI_API_KEY", "AIzaSyABWll1qHfrauwsTZqcnp_B7baRZUtG3jI")
+api_key = "AIzaSyABWll1qHfrauwsTZqcnp_B7baRZUtG3jI"
 genai.configure(api_key=api_key)
 model = genai.GenerativeModel('gemini-1.5-pro')
 

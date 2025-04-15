@@ -153,7 +153,8 @@ document.addEventListener('DOMContentLoaded', function() {
         chatMessages.scrollTop = chatMessages.scrollHeight;
         
         // Send question to API
-        fetch('/outfit/ask', {
+        // Update the fetch URL from a relative path to the full Render URL
+        fetch('https://seasonal-wardrobe.onrender.com/outfit/ask', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
