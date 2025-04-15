@@ -331,11 +331,10 @@
                 currentWeather.innerHTML = '<div class="loading">Loading weather data...</div>';
 
                 // Fetch current weather from our backend
-                // Update the fetch URL from a relative path to the full Render URL
                 const weatherResponse = await fetch(
-                    `https://seasonal-wardrobe.onrender.com/energy/weather?city=${encodeURIComponent(city)}`
+                    `/energy/weather?city=${encodeURIComponent(city)}`
                 );
-                                
+                
                 if (!weatherResponse.ok) {
                     throw new Error('City not found');
                 }
