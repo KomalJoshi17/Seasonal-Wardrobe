@@ -1,0 +1,96 @@
+/* Add or update these styles for better section separation and highlighting */
+.analysis-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.analysis-heading {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-light);
+    padding-bottom: 0.5rem;
+    margin-top: 1rem;
+}
+
+.analysis-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding-left: 0.5rem;
+    border-left: 3px solid var(--primary-light);
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.analysis-highlight {
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.analysis-point {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.analysis-point:before {
+    content: "•";
+    position: absolute;
+    left: 0.5rem;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* Add more space between sections */
+.message.bot-message .analysis-section > div:not(:last-child) {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Center the image and analysis content */
+.upload-section, .preview-box, .analysis-section {
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+/* Improve chat message formatting */
+.message {
+    max-width: 85%;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 12px;
+    line-height: 1.5;
+}
+
+.user-message {
+    align-self: flex-end;
+    background-color: var(--primary-light);
+    color: var(--text-color);
+}
+
+.bot-message {
+    align-self: flex-start;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+}
+
+/* Make chat messages container centered */
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Ensure follow-up questions appear in normal chat format */
+.bot-message .analysis-section {
+    text-align: left;
+}

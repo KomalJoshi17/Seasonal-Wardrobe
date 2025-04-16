@@ -195,8 +195,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 content = content.replace(titlePattern, '').trim();
             }
             
-            // Highlight bold text (text between ** **)
+            // Highlight bold text (text between ** ** or important keywords)
             content = content.replace(/\*\*(.*?)\*\*/g, '<span class="analysis-highlight">$1</span>');
+            
+            // Make important keywords bold if they're not already
+            const keywordsToHighlight = [
+                'casual', 'formal', 'sporty', 'elegant', 'business', 'professional',
+                'monochromatic', 'complementary', 'analogous', 'neutral', 'vibrant',
+                'loose', 'fitted', 'oversized', 'tailored', 'slim', 'relaxed',
+                'office', 'party', 'everyday', 'special occasion', 'interview',
+                'summer', 'winter', 'fall', 'spring', 'seasonal'
+            ];
+            
+            keywordsToHighlight.forEach(keyword => {
+                const regex = new RegExp(`\\b${keyword}\\b`, 'gi');
+                content = content.replace(regex, match => {
+                    // Only replace if not already in a highlight span
+                    if (!content.includes(`<span class="analysis-highlight">${match}</span>`)) {
+                        return `<span class="analysis-highlight">${match}</span>`;
+                    }
+                    return match;
+                });
+            });
             
             // Convert bullet points (lines starting with * or -) to styled points
             const lines = content.split('\n');
