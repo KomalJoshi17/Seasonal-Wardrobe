@@ -15,7 +15,13 @@ outfit_bp = Blueprint('outfit', __name__)
 # Configure Gemini model
 api_key = os.getenv("GEMINI_API_KEY")
 genai.configure(api_key=api_key)
-model = genai.GenerativeModel('gemini-1.5-flash')
+# Update model with generation config
+model = genai.GenerativeModel('gemini-1.5-flash',
+                             generation_config=genai.GenerationConfig(
+                                 temperature=0.4,
+                                 top_p=1.0,
+                                 top_k=32
+                             ))
 
 @outfit_bp.route('/analyze', methods=['POST'])
 def analyze_outfit():
@@ -45,8 +51,10 @@ def analyze_outfit():
         temp_path = "temp_image.jpg"
         image.save(temp_path)
         
+        # In the analyze_outfit function:
         # Load the image for Gemini
-        image_for_model = Image.open(temp_path)
+        with open(temp_path, "rb") as f:
+            image_bytes = f.read()
         
         # Generate analysis using Gemini
         prompt = """
@@ -61,7 +69,10 @@ def analyze_outfit():
         Format your response in a clear, structured way with sections for each aspect.
         """
         
-        response = model.generate_content([prompt, image_for_model])
+        response = model.generate_content([
+            prompt,
+            {"mime_type": "image/jpeg", "data": image_bytes}
+        ])
         analysis = response.text
         
         # Clean up temporary file
@@ -106,8 +117,10 @@ def ask_about_outfit():
         temp_path = "temp_image.jpg"
         image.save(temp_path)
         
+        # In the ask_about_outfit function:
         # Load the image for Gemini
-        image_for_model = Image.open(temp_path)
+        with open(temp_path, "rb") as f:
+            image_bytes = f.read()
         
         # Generate response to the question
         prompt = f"""
@@ -118,7 +131,10 @@ def ask_about_outfit():
         Provide a detailed and helpful response.
         """
         
-        response = model.generate_content([prompt, image_for_model])
+        response = model.generate_content([
+            prompt,
+            {"mime_type": "image/jpeg", "data": image_bytes}
+        ])
         answer = response.text
         
         # Clean up temporary file
