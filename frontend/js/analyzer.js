@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // DOM Elements
     const uploadBox = document.getElementById('uploadBox');
     const imageInput = document.getElementById('imageInput');
     const previewBox = document.getElementById('previewBox');
@@ -11,30 +12,28 @@ document.addEventListener('DOMContentLoaded', function() {
     const sendBtn = document.getElementById('sendBtn');
     const loadingOverlay = document.getElementById('loadingOverlay');
     
+    // Store the current image data
     let currentImageData = null;
     
-    // Handle drag and drop
+    // Event Listeners
+    uploadBox.addEventListener('click', () => imageInput.click());
+    
     uploadBox.addEventListener('dragover', (e) => {
         e.preventDefault();
-        uploadBox.classList.add('drag-over');
+        uploadBox.classList.add('dragover');
     });
     
     uploadBox.addEventListener('dragleave', () => {
-        uploadBox.classList.remove('drag-over');
+        uploadBox.classList.remove('dragover');
     });
     
     uploadBox.addEventListener('drop', (e) => {
         e.preventDefault();
-        uploadBox.classList.remove('drag-over');
+        uploadBox.classList.remove('dragover');
         
         if (e.dataTransfer.files.length) {
             handleImageFile(e.dataTransfer.files[0]);
         }
-    });
-    
-    // Handle click to upload
-    uploadBox.addEventListener('click', () => {
-        imageInput.click();
     });
     
     imageInput.addEventListener('change', (e) => {
@@ -43,17 +42,26 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Handle new image button
     newImageBtn.addEventListener('click', () => {
         previewBox.style.display = 'none';
-        uploadBox.style.display = 'flex';
+        uploadBox.style.display = 'block';
         analysisSection.style.display = 'none';
         chatMessages.innerHTML = '';
         currentImageData = null;
     });
     
-    // Handle analyze button
-    analyzeBtn.addEventListener('click', () => {
+    analyzeBtn.addEventListener('click', analyzeOutfit);
+    
+    sendBtn.addEventListener('click', sendQuestion);
+    
+    userInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            sendQuestion();
+        }
+    });
+    
+    // Functions
+    function analyzeOutfit() {
         if (!currentImageData) return;
         
         loadingOverlay.style.display = 'flex';
@@ -73,20 +81,8 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (data.success) {
                 analysisSection.style.display = 'block';
-                
-                // Add bot message with analysis
-                const botMessage = document.createElement('div');
-                botMessage.className = 'message bot-message';
-                botMessage.innerHTML = formatAnalysis(data.analysis);
-                chatMessages.appendChild(botMessage);
-                
-                // Add welcome message
-                const welcomeMessage = document.createElement('div');
-                welcomeMessage.className = 'message bot-message';
-                welcomeMessage.textContent = "You can ask me specific questions about this outfit!";
-                chatMessages.appendChild(welcomeMessage);
-                
-                chatMessages.scrollTop = chatMessages.scrollHeight;
+                const formattedAnalysis = formatAnalysis(data.analysis);
+                addMessage('bot', formattedAnalysis);
             } else {
                 alert('Error: ' + (data.error || 'Failed to analyze outfit'));
             }
@@ -96,65 +92,18 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error:', error);
             alert('Error analyzing outfit. Please try again.');
         });
-    });
-    
-    // Handle send button
-    sendBtn.addEventListener('click', () => {
-        sendQuestion();
-    });
-    
-    // Handle enter key
-    userInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            sendQuestion();
-        }
-    });
-    
-    // Function to handle image file
-    function handleImageFile(file) {
-        if (!file.type.match('image.*')) {
-            alert('Please upload an image file');
-            return;
-        }
-        
-        const reader = new FileReader();
-        
-        reader.onload = (e) => {
-            currentImageData = e.target.result;
-            imagePreview.src = e.target.result;
-            uploadBox.style.display = 'none';
-            previewBox.style.display = 'block';
-        };
-        
-        reader.readAsDataURL(file);
     }
     
-    // Function to send question
     function sendQuestion() {
         const question = userInput.value.trim();
-        
         if (!question || !currentImageData) return;
         
-        // Add user message
-        const userMessage = document.createElement('div');
-        userMessage.className = 'message user-message';
-        userMessage.textContent = question;
-        chatMessages.appendChild(userMessage);
-        
-        // Clear input
+        addMessage('user', question);
         userInput.value = '';
         
-        // Add typing indicator
-        const typingIndicator = document.createElement('div');
-        typingIndicator.className = 'message bot-message typing-indicator';
-        typingIndicator.innerHTML = '<span>.</span><span>.</span><span>.</span>';
-        chatMessages.appendChild(typingIndicator);
+        loadingOverlay.style.display = 'flex';
         
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-        
-        // Send question to API
-        // Update the fetch URL from a relative path to the full Render URL
-        fetch('https://seasonal-wardrobe.onrender.com/outfit/ask', {
+        fetch('/outfit/ask', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -166,57 +115,109 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
-            // Remove typing indicator
-            chatMessages.removeChild(typingIndicator);
+            loadingOverlay.style.display = 'none';
             
             if (data.success) {
-                // Add bot response
-                const botResponse = document.createElement('div');
-                botResponse.className = 'message bot-message';
-                botResponse.innerHTML = formatText(data.answer);
-                chatMessages.appendChild(botResponse);
+                // Format the answer before adding it to the chat
+                const formattedAnswer = formatAnalysis(data.answer);
+                addMessage('bot', formattedAnswer);
             } else {
-                // Add error message
-                const errorMessage = document.createElement('div');
-                errorMessage.className = 'message bot-message error';
-                errorMessage.textContent = data.error || 'Failed to process your question';
-                chatMessages.appendChild(errorMessage);
+                alert('Error: ' + (data.error || 'Failed to process question'));
             }
-            
-            chatMessages.scrollTop = chatMessages.scrollHeight;
         })
         .catch(error => {
-            // Remove typing indicator
-            chatMessages.removeChild(typingIndicator);
-            
-            // Add error message
-            const errorMessage = document.createElement('div');
-            errorMessage.className = 'message bot-message error';
-            errorMessage.textContent = 'Error processing your question. Please try again.';
-            chatMessages.appendChild(errorMessage);
-            
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            loadingOverlay.style.display = 'none';
             console.error('Error:', error);
+            alert('Error processing question. Please try again.');
         });
     }
     
-    // Format analysis text with markdown-like syntax
-    function formatAnalysis(text) {
-        return text
-            .replace(/\n\n/g, '<br><br>')
-            .replace(/\n/g, '<br>')
-            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-            .replace(/\*(.*?)\*/g, '<em>$1</em>')
-            .replace(/^# (.*?)$/gm, '<h3>$1</h3>')
-            .replace(/^## (.*?)$/gm, '<h4>$1</h4>');
+    function handleImageFile(file) {
+        if (!file.type.match('image.*')) {
+            alert('Please select an image file');
+            return;
+        }
+        
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            currentImageData = e.target.result;
+            imagePreview.src = currentImageData;
+            uploadBox.style.display = 'none';
+            previewBox.style.display = 'block';
+        };
+        
+        reader.readAsDataURL(file);
     }
     
-    // Format regular text
-    function formatText(text) {
-        return text
-            .replace(/\n\n/g, '<br><br>')
-            .replace(/\n/g, '<br>')
-            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-            .replace(/\*(.*?)\*/g, '<em>$1</em>');
+    function addMessage(type, content) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${type}-message`;
+        messageDiv.innerHTML = content;
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    
+    function formatAnalysis(text) {
+        // Create a container for the formatted analysis
+        let formattedText = '<div class="analysis-section">';
+        
+        // Split the text by numbered sections (1., 2., etc.)
+        const sections = text.split(/\d+\.\s+/);
+        
+        // Get the section titles using regex
+        const sectionTitles = text.match(/\d+\.\s+([^:]+):/g) || [];
+        
+        // Skip the first empty section if it exists
+        const startIndex = sections[0].trim() === '' ? 1 : 0;
+        
+        // Process each section
+        for (let i = startIndex; i < sections.length; i++) {
+            const sectionIndex = i - (startIndex === 1 ? 1 : 0);
+            
+            if (sectionTitles[sectionIndex]) {
+                // Extract the title without the number and colon
+                const titleText = sectionTitles[sectionIndex].replace(/\d+\.\s+/, '').replace(':', '');
+                formattedText += `<div class="analysis-heading">${titleText}</div>`;
+            }
+            
+            // Process the content of the section
+            let content = sections[i];
+            if (i === 0 && startIndex === 0) {
+                // This is an introduction paragraph before the numbered sections
+                formattedText += `<div class="analysis-content">${content}</div>`;
+                continue;
+            }
+            
+            // Remove the title from the content if it exists
+            if (sectionTitles[sectionIndex]) {
+                const titlePattern = new RegExp(sectionTitles[sectionIndex].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+                content = content.replace(titlePattern, '').trim();
+            }
+            
+            // Highlight bold text (text between ** **)
+            content = content.replace(/\*\*(.*?)\*\*/g, '<span class="analysis-highlight">$1</span>');
+            
+            // Convert bullet points (lines starting with * or -) to styled points
+            const lines = content.split('\n');
+            let processedContent = '';
+            
+            lines.forEach(line => {
+                line = line.trim();
+                if (line.startsWith('*') || line.startsWith('-')) {
+                    // This is a bullet point
+                    const pointText = line.substring(1).trim();
+                    processedContent += `<div class="analysis-point">${pointText}</div>`;
+                } else if (line) {
+                    // Regular paragraph
+                    processedContent += `<p>${line}</p>`;
+                }
+            });
+            
+            formattedText += `<div class="analysis-content">${processedContent}</div>`;
+        }
+        
+        formattedText += '</div>';
+        return formattedText;
     }
 });
