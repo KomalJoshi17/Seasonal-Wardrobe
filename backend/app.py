@@ -16,12 +16,14 @@ CORS(app)
 app.register_blueprint(outfit_bp, url_prefix='/outfit')
 
 # API keys from .env
-api_key = os.getenv("AIzaSyABWll1qHfrauwsTZqcnp_B7baRZUtG3jI")
-WEATHER_API_KEY = os.getenv("093a44f57ca807d2b7a6f6b1163da88c")
+api_key = os.getenv("GEMINI_API_KEY")
+WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
+
 
 # Configure Gemini model
 genai.configure(api_key=api_key)
-model = genai.GenerativeModel('gemini-1.5-flash')
+model = genai.GenerativeModel('gemini-pro-vision')
+
 
 # Chat history for each session
 chat_history = {}

@@ -11,7 +11,7 @@ outfit_bp = Blueprint('outfit', __name__)
 # Configure Gemini API
 api_key = "AIzaSyABWll1qHfrauwsTZqcnp_B7baRZUtG3jI"
 genai.configure(api_key=api_key)
-model = genai.GenerativeModel('gemini-1.5-pro')
+model = genai.GenerativeModel('gemini-pro-vision')
 
 @outfit_bp.route('/analyze', methods=['POST'])
 def analyze_outfit():
