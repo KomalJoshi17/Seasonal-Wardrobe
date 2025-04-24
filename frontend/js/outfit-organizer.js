@@ -11,23 +11,6 @@ document.addEventListener('DOMContentLoaded', function() {
             addOutfit();
         }
     });
-
-    // Check if theme toggle is working
-    const themeToggle = document.getElementById('themeToggle');
-    if (themeToggle) {
-        console.log("Theme toggle found");
-    } else {
-        console.log("Theme toggle not found");
-    }
-
-    // Check if localStorage is accessible
-    try {
-        localStorage.setItem('test', 'test');
-        localStorage.removeItem('test');
-        console.log("localStorage is working");
-    } catch (e) {
-        console.error("localStorage error:", e);
-    }
 });
 
 // Function to add a new outfit
@@ -46,11 +29,6 @@ function addOutfit() {
     // Add outfit to the appropriate list
     const listId = `${category}-list`;
     const outfitList = document.getElementById(listId);
-    
-    if (!outfitList) {
-        console.error(`List with ID ${listId} not found`);
-        return;
-    }
     
     const li = document.createElement('li');
     li.innerHTML = `
@@ -87,49 +65,24 @@ function saveOutfits() {
     categories.forEach(category => {
         const listId = `${category}-list`;
         const outfitList = document.getElementById(listId);
-        
-        if (!outfitList) {
-            console.error(`List with ID ${listId} not found when saving`);
-            outfits[category] = [];
-            return;
-        }
-        
         const items = outfitList.querySelectorAll('li span');
+        
         outfits[category] = Array.from(items).map(item => item.textContent);
     });
     
-    try {
-        localStorage.setItem('savedOutfits', JSON.stringify(outfits));
-        console.log("Outfits saved successfully:", outfits);
-    } catch (e) {
-        console.error("Error saving outfits:", e);
-    }
+    localStorage.setItem('savedOutfits', JSON.stringify(outfits));
 }
 
 // Function to load outfits from localStorage
 function loadOutfits() {
-    try {
-        const savedOutfits = localStorage.getItem('savedOutfits');
-        
-        if (!savedOutfits) {
-            console.log("No saved outfits found");
-            return;
-        }
-        
+    const savedOutfits = localStorage.getItem('savedOutfits');
+    
+    if (savedOutfits) {
         const outfits = JSON.parse(savedOutfits);
-        console.log("Loading outfits:", outfits);
         
         Object.keys(outfits).forEach(category => {
             const listId = `${category}-list`;
             const outfitList = document.getElementById(listId);
-            
-            if (!outfitList) {
-                console.error(`List with ID ${listId} not found when loading`);
-                return;
-            }
-            
-            // Clear existing items
-            outfitList.innerHTML = '';
             
             outfits[category].forEach(outfit => {
                 const li = document.createElement('li');
@@ -143,7 +96,5 @@ function loadOutfits() {
                 outfitList.appendChild(li);
             });
         });
-    } catch (e) {
-        console.error("Error loading outfits:", e);
     }
 }
