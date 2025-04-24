@@ -1,53 +1,40 @@
 // Theme toggle functionality
 document.addEventListener('DOMContentLoaded', function() {
-    initializeTheme();
+    // Get the theme toggle button
+    const themeToggle = document.getElementById('themeToggle');
     
-    // Add event listener to theme toggle button
-    const themeToggle = document.querySelector('.theme-toggle');
-    if (themeToggle) {
-        themeToggle.addEventListener('click', toggleTheme);
-    }
-});
-
-// Initialize theme based on localStorage or system preference
-function initializeTheme() {
+    // Check if there's a saved theme preference
     const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     
-    // Set theme based on saved preference or system preference
+    // Apply saved theme or default to light
     if (savedTheme) {
         document.documentElement.setAttribute('data-theme', savedTheme);
         updateThemeIcon(savedTheme);
-    } else if (prefersDark) {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        updateThemeIcon('dark');
     } else {
         document.documentElement.setAttribute('data-theme', 'light');
         updateThemeIcon('light');
     }
-}
-
-// Toggle between light and dark themes
-function toggleTheme() {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
     
-    // Update theme
-    document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
+    // Add click event to toggle theme
+    themeToggle.addEventListener('click', function() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        
+        // Update theme
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        
+        // Update icon
+        updateThemeIcon(newTheme);
+    });
     
-    // Update icon
-    updateThemeIcon(newTheme);
-}
-
-// Update the theme toggle icon based on current theme
-function updateThemeIcon(theme) {
-    const themeToggle = document.querySelector('.theme-toggle i');
-    if (themeToggle) {
+    // Function to update the theme icon
+    function updateThemeIcon(theme) {
+        const icon = themeToggle.querySelector('i');
         if (theme === 'dark') {
-            themeToggle.className = 'fas fa-sun';
+            icon.className = 'fas fa-sun';
         } else {
-            themeToggle.className = 'fas fa-moon';
+            icon.className = 'fas fa-moon';
         }
     }
-}
+});
