@@ -284,4 +284,229 @@ document.addEventListener('DOMContentLoaded', function() {
         formattedText += '</div>';
         return formattedText;
     }
-});
+    
+    // Function to analyze image using Gemini API
+    async function analyzeOutfitWithGemini(imageData) {
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        loadingOverlay.style.display = 'flex';
+        
+        try {
+            // Replace with your actual Gemini API key
+            const apiKey = 'AIzaSyABWll1qHfrauwsTZqcnp_B7baRZUtG3jI';
+            const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent';
+            
+            // Convert image data to base64
+            const base64Image = imageData.split(',')[1];
+            
+            // Prepare the request payload
+            const payload = {
+                contents: [{
+                    parts: [
+                        { text: "Analyze this outfit image. Describe the outfit in detail, identify the season it's best suited for (summer, winter, fall, or spring), and suggest appropriate occasions to wear it." },
+                        {
+                            inline_data: {
+                                mime_type: "image/jpeg",
+                                data: base64Image
+                            }
+                        }
+                    ]
+                }],
+                generationConfig: {
+                    temperature: 0.4,
+                    maxOutputTokens: 1024
+                }
+            };
+            
+            // Make the API request
+            const response = await fetch(`${apiUrl}?key=${apiKey}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+            
+            if (!response.ok) {
+                throw new Error(`API request failed with status ${response.status}`);
+            }
+            
+            const data = await response.json();
+            const analysisText = data.candidates[0].content.parts[0].text;
+            
+            // Detect season from analysis
+            const detectedSeason = detectSeason(analysisText);
+            
+            // Create outfit summary
+            const outfitSummary = `Outfit for ${detectedSeason} - ${new Date().toLocaleDateString()}`;
+            
+            // Save to outfit organizer
+            const saved = saveOutfitToOrganizer(outfitSummary, detectedSeason);
+            
+            // Display analysis
+            document.getElementById('analysisSection').style.display = 'block';
+            addMessage('bot', analysisText);
+            
+            // Show notification about saving
+            if (saved) {
+                addMessage('bot', `I've automatically added this outfit to your ${detectedSeason.charAt(0).toUpperCase() + detectedSeason.slice(1)} collection in the Outfit Organizer.`);
+                showNotification(`Outfit saved to ${detectedSeason} collection!`);
+            }
+            
+            return analysisText;
+        } catch (error) {
+            console.error('Error analyzing image:', error);
+            addMessage('bot', 'Sorry, there was an error analyzing your outfit. Please try again.');
+            return null;
+        } finally {
+            loadingOverlay.style.display = 'none';
+        }
+    }
+    
+    // Function to detect season from analysis text
+    function detectSeason(analysisText) {
+        const seasonKeywords = {
+            'summer': ['summer', 'hot weather', 'warm weather', 'beach', 'lightweight', 'breathable', 'shorts', 'sandals', 'tank top', 'linen'],
+            'winter': ['winter', 'cold weather', 'snow', 'freezing', 'warm layers', 'coat', 'jacket', 'sweater', 'boots', 'scarf', 'gloves'],
+            'spring': ['spring', 'mild weather', 'light jacket', 'floral', 'pastel', 'rain', 'showers', 'light layers'],
+            'fall': ['fall', 'autumn', 'cool weather', 'layering', 'jacket', 'cardigan', 'boots', 'earth tones', 'flannel']
+        };
+        
+        // Count occurrences of season keywords
+        const seasonCounts = {
+            'summer': 0,
+            'winter': 0,
+            'spring': 0,
+            'fall': 0
+        };
+        
+        // Check for each keyword in the analysis text
+        for (const season in seasonKeywords) {
+            for (const keyword of seasonKeywords[season]) {
+                const regex = new RegExp('\\b' + keyword + '\\b', 'gi');
+                const matches = analysisText.match(regex);
+                if (matches) {
+                    seasonCounts[season] += matches.length;
+                }
+            }
+        }
+        
+        // Find the season with the most keyword matches
+        let detectedSeason = 'unknown';
+        let maxCount = 0;
+        
+        for (const season in seasonCounts) {
+            if (seasonCounts[season] > maxCount) {
+                maxCount = seasonCounts[season];
+                detectedSeason = season;
+            }
+        }
+        
+        return maxCount > 0 ? detectedSeason : 'unknown';
+    }
+    
+    // Function to save outfit to organizer
+    function saveOutfitToOrganizer(outfitDescription, season) {
+        // Map seasons to weather categories
+        const seasonToWeather = {
+            'summer': 'sunny',
+            'winter': 'cold',
+            'spring': 'rainy',
+            'fall': 'windy',
+            'unknown': 'sunny'
+        };
+        
+        const weatherCategory = seasonToWeather[season];
+        
+        // Get existing outfits from localStorage
+        let savedOutfits = localStorage.getItem('savedOutfits');
+        let outfits = savedOutfits ? JSON.parse(savedOutfits) : {
+            'sunny': [],
+            'cold': [],
+            'rainy': [],
+            'windy': []
+        };
+        
+        // Add outfit to the appropriate category if it doesn't already exist
+        if (!outfits[weatherCategory].includes(outfitDescription)) {
+            outfits[weatherCategory].push(outfitDescription);
+            localStorage.setItem('savedOutfits', JSON.stringify(outfits));
+            return true;
+        }
+        
+        return false;
+    }
+    
+    // Function to show notification
+    function showNotification(message) {
+        const notification = document.getElementById('saveNotification');
+        const notificationText = notification.querySelector('p');
+        notificationText.textContent = message;
+        
+        notification.style.display = 'flex';
+        
+        // Hide notification after 3 seconds
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 3000);
+    }
+    
+    // Update the analyzeImage function to use Gemini
+    function analyzeImage() {
+        const imageInput = document.getElementById('imageInput');
+        
+        if (!imageInput.files || imageInput.files.length === 0) {
+            alert('Please select an image first');
+            return;
+        }
+        
+        const file = imageInput.files[0];
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            const imageData = e.target.result;
+            analyzeOutfitWithGemini(imageData);
+        };
+        
+        reader.readAsDataURL(file);
+    }
+    
+    // Add event listeners when the document is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        const uploadBox = document.getElementById('uploadBox');
+        const imageInput = document.getElementById('imageInput');
+        const previewBox = document.getElementById('previewBox');
+        const imagePreview = document.getElementById('imagePreview');
+        const newImageBtn = document.getElementById('newImageBtn');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        
+        // Upload box click event
+        uploadBox.addEventListener('click', function() {
+            imageInput.click();
+        });
+        
+        // Image input change event
+        imageInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    uploadBox.style.display = 'none';
+                    previewBox.style.display = 'block';
+                };
+                
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+        
+        // New image button click event
+        newImageBtn.addEventListener('click', function() {
+            uploadBox.style.display = 'block';
+            previewBox.style.display = 'none';
+            document.getElementById('analysisSection').style.display = 'none';
+            document.getElementById('chatMessages').innerHTML = '';
+        });
+        
+        // Analyze button click event
+        analyzeBtn.addEventListener('click', analyzeImage);
+    });
