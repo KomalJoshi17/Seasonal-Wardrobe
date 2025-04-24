@@ -810,7 +810,7 @@ html[data-theme="dark"] .theme-toggle i.fa-sun {
 }
 
 html[data-theme="light"] .theme-toggle i.fa-moon {
-    color: #6C63FF;
+    color: #2196f3;
 }
 
 html[data-theme="dark"] .theme-toggle {
