@@ -778,30 +778,41 @@ body {
     transform: scale(1.2);
 }
 
-/* Make sure theme toggle is visible and properly styled */
+/* Theme toggle button styling */
 .theme-toggle {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: var(--primary-color);
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer !important;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: var(--card-bg);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
+    cursor: pointer;
+    margin-left: 15px;
 }
 
 .theme-toggle:hover {
-    transform: scale(1.1);
+    background-color: var(--card-bg-secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .theme-toggle i {
-    font-size: 1.5rem;
-    color: white;
+    font-size: 1.1rem;
+    color: var(--text-color);
     transition: all 0.3s ease;
+}
+
+html[data-theme="dark"] .theme-toggle i.fa-sun {
+    color: #FFC107;
+}
+
+html[data-theme="light"] .theme-toggle i.fa-moon {
+    color: #6C63FF;
+}
+
+html[data-theme="dark"] .theme-toggle {
+    background-color: #2d3748;
 }

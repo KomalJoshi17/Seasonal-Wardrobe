@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sustainable Fashion Planner | AI Wardrobe Assistant</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/sustainable-planner.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"><i class="fas fa-tshirt"></i> AI Wardrobe</div>
+        <div class="nav-links">
+            <a href="index.html">Weather & Outfits</a>
+            <a href="outfit-analyzer.html">Outfit Analyzer</a>
+            <a href="outfit-organizer.html">Outfit Organizer</a>
+            <a href="bot.html">Style Assistant</a>
+            <a href="energy-tips.html">Energy Tips</a>
+            <a href="sustainable-planner.html" class="active">Sustainable Planner</a>
+            <a href="team.html">Our Team</a>
+        </div>
+        <div class="theme-toggle" id="themeToggle" style="cursor: pointer;">
+            <i class="fas fa-moon"></i>
+        </div>
+    </nav>
+
+    <main class="planner-page">
+        <div class="planner-container">
+            <div class="planner-header">
+                <h1><i class="fas fa-leaf"></i> Sustainable Fashion Planner</h1>
+                <p>Plan your outfits for the week with sustainability in mind, based on weather forecasts and environmental impact.</p>
+            </div>
+
+            <div class="location-section">
+                <div class="location-input">
+                    <input type="text" id="cityInput" placeholder="Enter your city...">
+                    <button id="searchBtn"><i class="fas fa-search"></i> Get Forecast</button>
+                </div>
+            </div>
+
+            <div id="loadingIndicator" class="loading-indicator">
+                <div class="spinner"></div>
+                <p>Generating your sustainable fashion plan...</p>
+            </div>
+
+            <div id="errorMessage" class="error-message" style="display: none;">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>Unable to get weather data. Please check your city name and try again.</p>
+            </div>
+
+            <div id="weekPlan" class="week-plan" style="display: none;">
+                <div class="plan-header">
+                    <h2>Your 5-Day Sustainable Fashion Plan</h2>
+                    <p>Based on weather forecast for <span id="cityName">your city</span></p>
+                </div>
+                
+                <div id="planCards" class="plan-cards">
+                    <!-- Plan cards will be inserted here -->
+                </div>
+                
+                <div class="sustainability-score">
+                    <h3>Your Sustainability Impact</h3>
+                    <div class="score-container">
+                        <div class="score-meter">
+                            <div id="scoreIndicator" class="score-indicator" style="width: 75%;"></div>
+                        </div>
+                        <div class="score-label">
+                            <span id="scoreValue">75</span>/100
+                        </div>
+                    </div>
+                    <p id="scoreMessage">Great job! Your planned outfits have a positive environmental impact.</p>
+                </div>
+                
+                <div class="sustainability-tips">
+                    <h3><i class="fas fa-lightbulb"></i> Sustainable Fashion Tips</h3>
+                    <div id="sustainabilityTips" class="tips-container">
+                        <!-- Tips will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/theme.js"></script>
+    <script src="js/sustainable-planner.js"></script>
+</body>
+</html>
