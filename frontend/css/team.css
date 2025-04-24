@@ -121,3 +121,24 @@
         font-size: 2rem;
     }
 }
+
+.member-avatar {
+    padding: 5px;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 2rem;
+    margin-top:15px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.member-avatar i {
+    font-size: 5.5rem;
+    color: white;
+    position: relative;
+    top: 10px; /* This moves the icon down by 10px */
+}
