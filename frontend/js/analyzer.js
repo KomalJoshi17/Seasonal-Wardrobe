@@ -150,12 +150,56 @@ document.addEventListener('DOMContentLoaded', function() {
         reader.readAsDataURL(file);
     }
     
+    // Add this function to your analyzer.js file
+    
+    function formatAnalyzerMessage(messageElement) {
+        // Find all text that looks like bullet points and convert to proper lists
+        let html = messageElement.innerHTML;
+        
+        // Replace asterisks with proper bullet points
+        html = html.replace(/\*\s+(.*?)(?=\n\*|\n\n|$)/g, '<li>$1</li>');
+        
+        // Wrap lists in ul tags
+        if (html.includes('<li>')) {
+            html = html.replace(/<li>(.*?)(?=<li>|$)/g, '<ul><li>$1</ul>');
+            html = html.replace(/<\/ul><ul>/g, '');
+        }
+        
+        // Format headings
+        html = html.replace(/\n(#+)\s+(.*?)(?=\n)/g, function(match, hashes, text) {
+            const level = hashes.length;
+            return `<h${level+2}>${text}</h${level+2}>`;
+        });
+        
+        // Format bold text
+        html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        
+        // Format italic text
+        html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        
+        // Add section dividers
+        html = html.replace(/\n\n/g, '</div><div class="analysis-section">');
+        html = '<div class="analysis-section">' + html + '</div>';
+        
+        messageElement.innerHTML = html;
+    }
+    
+    // Modify your addMessage function to apply formatting
     function addMessage(type, content) {
+        const messagesContainer = document.getElementById('analysis-messages');
         const messageDiv = document.createElement('div');
-        messageDiv.className = `message ${type}-message`;
-        messageDiv.innerHTML = content;
-        chatMessages.appendChild(messageDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        messageDiv.classList.add('message');
+        messageDiv.classList.add(type === 'user' ? 'user-message' : 'bot-message');
+        
+        if (type === 'user') {
+            messageDiv.textContent = content;
+        } else {
+            messageDiv.innerHTML = content;
+            formatAnalyzerMessage(messageDiv);
+        }
+        
+        messagesContainer.appendChild(messageDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
     
     function formatAnalysis(text) {

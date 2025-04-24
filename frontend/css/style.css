@@ -509,27 +509,143 @@ body {
     margin-top: 0.5rem;
 }
 
+/* Typing indicator styling */
 .typing-indicator span {
+    background-color: #90CAF9 !important; /* Light blue color */
     display: inline-block;
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background-color: var(--primary-color); /* Changed from green to theme blue */
     margin: 0 2px;
-    animation: bounce 1.5s infinite ease-in-out;
+    animation: bounce 1.4s infinite ease-in-out;
+}
+
+.typing-indicator span:nth-child(1) {
+    animation-delay: -0.32s;
 }
 
 .typing-indicator span:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.typing-indicator span:nth-child(3) {
-    animation-delay: 0.4s;
+    animation-delay: -0.16s;
 }
 
 @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    0%, 80%, 100% { 
+        transform: scale(0);
+    } 
+    40% { 
+        transform: scale(1.0);
+    }
+}
+
+/* Add improved styling for outfit analysis content */
+.bot-message p {
+    margin-bottom: 12px;
+}
+
+.bot-message ul, .bot-message ol {
+    margin-left: 20px;
+    margin-bottom: 15px;
+    list-style-position: outside;
+}
+
+.bot-message ul {
+    list-style-type: disc;
+}
+
+.bot-message ol {
+    list-style-type: decimal;
+}
+
+.bot-message li {
+    margin-bottom: 8px;
+    display: list-item;
+    padding-left: 5px;
+}
+
+.bot-message h3, .bot-message h4 {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.bot-message strong, .bot-message b {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* Additional styling for analyzer messages */
+.analysis-section {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+}
+
+.analysis-section:not(:last-child) {
+    border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+}
+
+/* Force bullet points to display correctly */
+.bot-message ul {
+    list-style-type: disc !important;
+    padding-left: 25px !important;
+    margin-bottom: 15px !important;
+}
+
+.bot-message li {
+    display: list-item !important;
+    margin-bottom: 8px !important;
+    padding-left: 5px !important;
+    list-style: disc outside !important;
+}
+
+/* Make sure the bullet points are visible */
+.bot-message li::before {
+    content: "• ";
+    color: var(--primary-color);
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+/* Ensure proper spacing in messages */
+.bot-message {
+    line-height: 1.6 !important;
+}
+
+/* Make key terms stand out */
+.bot-message strong {
+    color: var(--primary-color) !important;
+    font-weight: 600 !important;
+}
+
+.analyzer-container .bot-message h3 {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+/* Fix for bullet points not showing */
+.analyzer-container .bot-message ul li {
+    list-style: disc outside !important;
+}
+
+/* Add spacing between sections */
+.analyzer-container .bot-message > div {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+}
+
+/* Make links stand out */
+.analyzer-container .bot-message a {
+    color: #2196f3;
+    text-decoration: underline;
+}
+
+/* Style for emphasized text */
+.bot-message em, .bot-message i {
+    font-style: italic;
 }
 
 /* Outfit analyzer styling */
@@ -576,4 +692,175 @@ body {
     border: none;
     border-radius: 8px;
     cursor: pointer;
+}
+
+/* Team page hero content styling */
+.hero-content {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 4rem 1rem 2rem;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 2.2rem;
+    }
+    
+    .hero-content p {
+        font-size: 1rem;
+    }
+}
+
+.team-container {
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 0 1rem;
+}
+
+.team-title {
+    text-align: center;
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 3rem;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.team-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    border-radius: 3px;
+}
+
+.team-members {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.team-member {
+    background: linear-gradient(145deg, var(--card-background), rgba(255, 255, 255, 0.1));
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+}
+
+.team-member:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.member-avatar {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 1.5rem;
+    border-radius: 50%;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.member-avatar i {
+    font-size: 4rem;
+    color: white;
+}
+
+.member-name {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.member-reg {
+    font-size: 1rem;
+    color: var(--text-color);
+    opacity: 0.8;
+    margin-bottom: 0.5rem;
+}
+
+.member-role {
+    font-size: 1.1rem;
+    color: var(--secondary-color);
+    margin-bottom: 1.5rem;
+}
+
+.member-social {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.member-social a {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.member-social a:hover {
+    background: var(--primary-color);
+    transform: scale(1.1);
+}
+
+.member-social i {
+    font-size: 1.2rem;
+    color: var(--text-color);
+}
+
+.member-social a:hover i {
+    color: white;
+}
+
+.footer {
+    text-align: center;
+    padding: 2rem;
+    margin-top: 3rem;
+    border-top: 1px solid var(--border-color);
+}
+
+@media (max-width: 768px) {
+    .team-members {
+        grid-template-columns: 1fr;
+    }
+    
+    .team-title {
+        font-size: 2rem;
+    }
+}
+
+.nav-links a.active {
+    color: var(--primary-color);
+    font-weight: 600;
 }

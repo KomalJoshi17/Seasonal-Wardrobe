@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Team | Wardrobe Assistant</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="hero">
+        <nav class="navbar">
+            <div class="logo"><i class="fas fa-tshirt"></i> AI Wardrobe</div>
+            <div class="nav-links">
+                <a href="index.html">Weather & Outfits</a>
+                <a href="outfit-analyzer.html">Outfit Analyzer</a>
+                <a href="bot.html">Style Assistant</a>
+                <a href="energy-tips.html">Energy Tips</a>
+                <a href="team.html">Our Team</a>
+            </div>
+            <!-- Add this before the closing </body> tag -->
+            <div class="theme-toggle" id="themeToggle" style="cursor: pointer;">
+                <i class="fas fa-moon"></i>
+            </div>
+        </nav>
+    </header>
+
+    <div class="team-container">
+        <h1 class="team-title">Meet Our Team</h1>
+        <div class="team-members">
+            <div class="team-member">
+                <div class="member-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <h2 class="member-name">Komal Joshi</h2>
+                <p class="member-reg">Registration: 12300550</p>
+                <div class="member-social">
+                    <!-- <a href="#"><i class="fab fa-github"></i></a> -->
+                    <a href="https://www.linkedin.com/in/komal-joshi10/"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+
+            <div class="team-member">
+                <div class="member-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <h2 class="member-name">Pankti Jain</h2>
+                <p class="member-reg">Registration: 12303448</p>
+                <div class="member-social">
+                    <!-- <a href="#"><i class="fab fa-github"></i></a> -->
+                    <a href="https://www.linkedin.com/in/pankti-jain?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+
+            <div class="team-member">
+                <div class="member-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <h2 class="member-name">Manvendra Pratap Singh</h2>
+                <p class="member-reg">Registration: 12307365</p>
+                <div class="member-social">
+                    <!-- <a href="#"><i class="fab fa-github"></i></a> -->
+                    <a href="https://www.linkedin.com/in/mmanvendra?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2023 Wardrobe Assistant. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        
+        // Update icon based on current theme
+        const themeIcon = document.querySelector('#themeToggle i');
+        if (savedTheme === 'dark') {
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        }
+        
+        // Theme toggle functionality
+        document.getElementById('themeToggle').addEventListener('click', function() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            // Save theme preference
+            localStorage.setItem('theme', newTheme);
+            document.documentElement.setAttribute('data-theme', newTheme);
+            
+            // Update icon
+            if (newTheme === 'dark') {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        });
+    </script>
+</body>
+</html>
