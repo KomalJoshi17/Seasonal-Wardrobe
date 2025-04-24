@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Outfit Organizer | AI Wardrobe Assistant</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/organizer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -18,7 +19,7 @@
             <a href="energy-tips.html">Energy Tips</a>
             <a href="team.html">Our Team</a>
         </div>
-        <div class="theme-toggle" id="themeToggle" style="cursor: pointer">
+        <div class="theme-toggle" id="themeToggle" style="cursor: pointer;">
             <i class="fas fa-moon"></i>
         </div>
     </nav>
@@ -40,44 +41,52 @@
             </div>
             
             <div class="weather-boxes">
+                <!-- Sunny Weather Box -->
                 <div class="weather-box" id="sunny-box">
                     <div class="weather-box-header">
                         <i class="fas fa-sun"></i>
                         <h2>Sunny Weather</h2>
                     </div>
-                    <ul class="outfit-list" id="sunny-list"></ul>
+                    <ul class="outfit-list" id="sunny-list">
+                        <!-- Outfits will be added here -->
+                    </ul>
                 </div>
                 
+                <!-- Rainy Weather Box -->
                 <div class="weather-box" id="rainy-box">
                     <div class="weather-box-header">
                         <i class="fas fa-cloud-rain"></i>
                         <h2>Rainy Weather</h2>
                     </div>
-                    <ul class="outfit-list" id="rainy-list"></ul>
+                    <ul class="outfit-list" id="rainy-list">
+                        <!-- Outfits will be added here -->
+                    </ul>
                 </div>
                 
+                <!-- Cold Weather Box -->
                 <div class="weather-box" id="cold-box">
                     <div class="weather-box-header">
                         <i class="fas fa-snowflake"></i>
                         <h2>Cold Weather</h2>
                     </div>
-                    <ul class="outfit-list" id="cold-list"></ul>
+                    <ul class="outfit-list" id="cold-list">
+                        <!-- Outfits will be added here -->
+                    </ul>
                 </div>
                 
+                <!-- Windy Weather Box -->
                 <div class="weather-box" id="windy-box">
                     <div class="weather-box-header">
                         <i class="fas fa-wind"></i>
                         <h2>Windy Weather</h2>
                     </div>
-                    <ul class="outfit-list" id="windy-list"></ul>
+                    <ul class="outfit-list" id="windy-list">
+                        <!-- Outfits will be added here -->
+                    </ul>
                 </div>
             </div>
         </div>
     </main>
-
-    <footer class="footer">
-        <p>&copy; 2023 AI Wardrobe Assistant. All rights reserved.</p>
-    </footer>
 
     <script src="js/theme.js"></script>
     <script src="js/outfit-organizer.js"></script>
