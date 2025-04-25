@@ -2,7 +2,7 @@
 :root {
     --quiz-primary: #1e88e5; /* Changed from purple to blue */
     --quiz-primary-light: #64b5f6; /* Lighter blue */
-    --quiz-primary-dark: #0d47a1; /* Darker blue */
+    --quiz-primary-dark: black; /* Darker blue */
     --quiz-secondary: #f8f9fa;
     --quiz-success: #28a745;
     --quiz-warning: #ffc107;
@@ -523,44 +523,49 @@ footer {
 }
 
 /* Dark mode adjustments - improved for better visibility */
-[data-theme="dark"] .quiz-secondary {
-    background-color: #2d3748;
-    color: #f8f9fa;
+/* Add these dark mode specific styles */
+/* Update the dark mode styles section */
+html[data-theme="dark"] {
+    --quiz-primary: #1e88e5;
+    --quiz-primary-light: #64b5f6;
+    --quiz-primary-dark: #0d47a1;
+    --quiz-secondary: #1a202c; /* Changed from #2d3748 to darker color */
+    --text-color: #f8f9fa;
+    --border-color: #4a5568;
+    --card-background: #1a202c; /* Changed from #2d3748 to match body */
 }
 
-[data-theme="dark"] .option {
-    background-color: #2d3748;
+html[data-theme="dark"] body {
+    background-color: #121212; /* Darker black background */
+    background-image: none;
+}
+
+/* Update card backgrounds to be slightly lighter than body */
+html[data-theme="dark"] .quiz-card,
+html[data-theme="dark"] .option,
+html[data-theme="dark"] .secondary-btn,
+html[data-theme="dark"] .nav-btn,
+html[data-theme="dark"] .action-btn,
+html[data-theme="dark"] .season,
+html[data-theme="dark"] .incorrect-item {
+    background-color: #1a202c; /* Slightly lighter than body */
     border-color: #4a5568;
 }
 
-[data-theme="dark"] .option:hover {
-    background-color: #4a5568;
+/* Hover states */
+html[data-theme="dark"] .option:hover,
+html[data-theme="dark"] .secondary-btn:hover,
+html[data-theme="dark"] .nav-btn:hover:not(:disabled),
+html[data-theme="dark"] .action-btn:hover {
+    background-color: #2d3748; /* Lighter hover state */
 }
 
-[data-theme="dark"] .option.selected {
-    background-color: var(--quiz-primary); /* Using main blue for better contrast in dark mode */
-    color: white;
-    border-color: var(--quiz-primary-light);
-}
-
-[data-theme="dark"] .secondary-btn,
-[data-theme="dark"] .nav-btn,
-[data-theme="dark"] .action-btn {
+html[data-theme="dark"] .season {
     background-color: #2d3748;
-    color: #f8f9fa;
+    border: 1px solid #4a5568;
 }
 
-[data-theme="dark"] .secondary-btn:hover,
-[data-theme="dark"] .nav-btn:hover:not(:disabled),
-[data-theme="dark"] .action-btn:hover {
-    background-color: #4a5568;
-}
-
-[data-theme="dark"] .season {
-    background-color: #2d3748;
-}
-
-[data-theme="dark"] .incorrect-item {
+html[data-theme="dark"] .incorrect-item {
     background-color: #2d3748;
 }
 
