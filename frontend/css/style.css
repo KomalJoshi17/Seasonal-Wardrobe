@@ -816,3 +816,101 @@ html[data-theme="light"] .theme-toggle i.fa-moon {
 html[data-theme="dark"] .theme-toggle {
     background-color: #2d3748;
 }
+
+/* Add these at the top of your style.css */
+html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+body {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Add this for page transitions */
+/* Add these to your existing page-transition styles */
+.page-transition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--primary-color);
+    z-index: 9999;
+    transform: translateX(0);
+}
+
+.page-transition.slide-out {
+    transform: translateX(0);
+    animation: slideOut 0.5s ease forwards;
+}
+
+.page-transition.slide-in {
+    transform: translateX(-100%);
+    animation: slideIn 0.5s ease forwards;
+}
+
+@keyframes slideOut {
+    from { transform: translateX(0); }
+    to { transform: translateX(100%); }
+}
+
+@keyframes slideIn {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+}
+
+/* Make sure body has overflow hidden during transitions */
+body.transition-active {
+    overflow: hidden;
+}
+
+.loading-indicator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9998;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.loading-indicator.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.loading-circle {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: var(--primary-color);
+    animation: spin 1s linear infinite;
+}
+
+button, a {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+button:active, a:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+}
