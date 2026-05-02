@@ -1,3 +1,4 @@
+
 from flask import Blueprint, request, jsonify
 import google.generativeai as genai
 import os
@@ -6,6 +7,7 @@ import io
 from PIL import Image
 from dotenv import load_dotenv
 
+print("GEMINI KEY:", os.getenv("GEMINI_API_KEY"))
 # Load environment variables
 load_dotenv()
 
